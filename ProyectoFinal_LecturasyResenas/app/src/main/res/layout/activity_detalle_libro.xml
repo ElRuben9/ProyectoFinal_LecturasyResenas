@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header -->
+        <TextView
+            android:text="Detalle del Libro"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- Portada -->
+        <ImageView
+            android:id="@+id/imgPortada"
+            android:layout_marginTop="12dp"
+            android:layout_width="150dp"
+            android:layout_height="220dp"
+            android:src="@drawable/ic_launcher_background"
+            android:layout_gravity="center_horizontal" />
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/tvTituloLibro"
+            android:text="El Nombre del Viento"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- Autor -->
+        <TextView
+            android:id="@+id/tvAutorLibro"
+            android:text="Patrick Rothfuss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- Categoría -->
+        <TextView
+            android:id="@+id/tvCategoria"
+            android:text="Fantasía"
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- Rating y progreso -->
+        <!-- Rating y progreso -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical">
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:numStars="5"
+                android:stepSize="0.5"
+                android:rating="4.0"
+                android:isIndicator="true"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp" />
+
+            <TextView
+                android:id="@+id/tvValorRating"
+                android:text="4.0"
+                android:layout_marginStart="8dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+        <ProgressBar
+            android:id="@+id/progresoLibro"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:layout_marginTop="8dp"
+            android:max="100"
+            android:progress="100" />
+
+        <!-- ACTUALIZAR PROGRESO -->
+        <LinearLayout
+            android:id="@+id/layoutProgreso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etPaginasLeidas"
+                android:hint="Páginas"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:inputType="number" />
+
+            <Button
+                android:id="@+id/btnActualizarProgreso"
+                android:text="Actualizar Progreso"
+                android:layout_marginStart="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <!-- RESUMEN -->
+        <LinearLayout
+            android:id="@+id/layoutResumen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:text="Resumen"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvResumen"
+                android:text="Aquí irá el resumen cuando se termine el libro."
+                android:layout_marginTop="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <!-- Sinopsis -->
+        <TextView
+            android:text="Sinopsis"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvSinopsis"
+            android:text="Aquí va la sinopsis del libro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Información del Libro -->
+        <TextView
+            android:text="Información del Libro"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvGenero"
+            android:text="Género: Fantasía Épica"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvEditorial"
+            android:text="Editorial: Plaza and Janés"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvAno"
+            android:text="Año: 2007"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvIsbn"
+            android:text="ISBN: 978-8401377032"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- Botón Editar -->
+        <Button
+            android:id="@+id/btnEditarDatos"
+            android:text="Editar Datos del Libro"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</ScrollView>
