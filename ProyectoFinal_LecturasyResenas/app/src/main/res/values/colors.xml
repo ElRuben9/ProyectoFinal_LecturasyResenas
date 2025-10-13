@@ -3,5 +3,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="darkBlue">#1F2937</color>
+    <color name="lightGray">#CACACA</color>
+    <color name="spinner_background">#9E9E9E</color>
+
+    <color name="orange">#FF9800</color>
+    <color name="greenie">#8BC34A</color>
+    <color name="blue">#00BCD4</color>
+
 
 </resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_biblioteca"
+        android:title="Biblioteca"
+        android:icon="@drawable/ic_biblioteca_placeholder" />
+    <item
+        android:id="@+id/nav_explorar"
+        android:title="Explorar"
+        android:icon="@drawable/ic_explorar_placeholder" />
+    <item
+        android:id="@+id/nav_estadisticas"
+        android:title="Estadísticas"
+        android:icon="@drawable/ic_estadisticas_placeholder" />
+</menu>
