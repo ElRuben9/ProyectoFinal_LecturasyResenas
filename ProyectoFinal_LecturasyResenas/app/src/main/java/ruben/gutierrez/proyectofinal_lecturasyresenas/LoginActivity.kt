@@ -39,12 +39,8 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
 
-        btnLogin.setOnClickListener {
-            Toast.makeText(this, "Completa los campos", Toast.LENGTH_SHORT).show()
-        }
 
         btnLogin.setOnClickListener {
-            Toast.makeText(this, "Completa los campos", Toast.LENGTH_SHORT).show()
 
             val email = correo.text.toString().trim()
             val password = pass.text.toString().trim()

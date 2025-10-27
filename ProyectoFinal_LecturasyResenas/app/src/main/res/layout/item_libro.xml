@@ -54,7 +54,9 @@
             android:stepSize="0.5"
             app:layout_constraintStart_toStartOf="@id/autorLibro"
             app:layout_constraintTop_toBottomOf="@id/autorLibro"
-            tools:rating="4.0"/>
+            tools:rating="4.0"
+            android:progressTint="@color/darkBlue"
+            />
 
         <ProgressBar
             android:id="@+id/progresoLibro"
@@ -65,7 +67,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/portadaLibro"
             app:layout_constraintTop_toBottomOf="@id/portadaLibro"
-            tools:progress="55" />
+            tools:progress="55"
+            android:progressTint="@color/darkBlue"/>
 
         <TextView
             android:id="@+id/textoProgreso"

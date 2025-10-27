@@ -1,93 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".EstadisticasActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
 
-        <TextView
-            android:text="Estadísticas de Lectura"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <!-- Tarjetas resumen -->
-        <GridLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:rowCount="2"
-            android:layout_marginBottom="16dp"
-            android:columnOrderPreserved="false">
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="Estadísticas de Lectura"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <!-- Tarjetas resumen -->
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:rowCount="2"
+                android:layout_marginBottom="16dp"
+                android:columnOrderPreserved="false">
+
+                <include
+                    android:id="@+id/cardLibrosAno"
+                    layout="@layout/item_card_resumen"
+                    android:layout_margin="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"/>
+
+                <include
+                    android:id="@+id/cardLibrosMes"
+                    layout="@layout/item_card_resumen"
+                    android:layout_margin="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"/>
+
+                <include
+                    android:id="@+id/cardPaginasAno"
+                    layout="@layout/item_card_resumen"
+                    android:layout_margin="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"/>
+
+                <include
+                    android:id="@+id/cardPaginasMes"
+                    layout="@layout/item_card_resumen"
+                    android:layout_margin="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"/>
+            </GridLayout>
+
+
+            <!-- Gráficas -->
+            <include
+                android:id="@+id/graficaLibrosMes"
+                layout="@layout/item_grafica_barras"/>
 
             <include
-                android:id="@+id/cardLibrosAno"
-                layout="@layout/item_card_resumen"
-                android:layout_margin="10dp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"/>
+                android:id="@+id/graficaLibrosAno"
+                layout="@layout/item_grafica_barras"/>
 
             <include
-                android:id="@+id/cardLibrosMes"
-                layout="@layout/item_card_resumen"
-                android:layout_margin="10dp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"/>
+                android:id="@+id/graficaCategorias"
+                layout="@layout/item_grafica_pastel"/>
 
             <include
-                android:id="@+id/cardPaginasAno"
-                layout="@layout/item_card_resumen"
-                android:layout_margin="10dp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"/>
+                android:id="@+id/graficaGeneros"
+                layout="@layout/item_grafica_pastel"/>
 
             <include
-                android:id="@+id/cardPaginasMes"
-                layout="@layout/item_card_resumen"
-                android:layout_margin="10dp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"/>
-        </GridLayout>
+                android:id="@+id/graficaPaginasMes"
+                layout="@layout/item_grafica_barras"/>
 
+            <include
+                android:id="@+id/graficaPaginasAno"
+                layout="@layout/item_grafica_barras"/>
 
-        <!-- Gráficas -->
-        <include
-            android:id="@+id/graficaLibrosMes"
-            layout="@layout/item_grafica_barras"/>
+        </LinearLayout>
 
-        <include
-            android:id="@+id/graficaLibrosAno"
-            layout="@layout/item_grafica_barras"/>
+    </ScrollView>
 
-        <include
-            android:id="@+id/graficaCategorias"
-            layout="@layout/item_grafica_pastel"/>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        app:menu="@menu/bottom_navigation_menu" />
 
-        <include
-            android:id="@+id/graficaGeneros"
-            layout="@layout/item_grafica_pastel"/>
-
-        <include
-            android:id="@+id/graficaPaginasMes"
-            layout="@layout/item_grafica_barras"/>
-
-        <include
-            android:id="@+id/graficaPaginasAno"
-            layout="@layout/item_grafica_barras"/>
-
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>

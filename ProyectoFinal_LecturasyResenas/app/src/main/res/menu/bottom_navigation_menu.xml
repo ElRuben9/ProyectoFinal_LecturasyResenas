@@ -4,10 +4,12 @@
         android:id="@+id/nav_biblioteca"
         android:title="Biblioteca"
         android:icon="@drawable/ic_biblioteca_placeholder" />
-    <item
-        android:id="@+id/nav_explorar"
-        android:title="Explorar"
-        android:icon="@drawable/ic_explorar_placeholder" />
+
+<!--    <item-->
+<!--        android:id="@+id/nav_explorar"-->
+<!--        android:title="Explorar"-->
+<!--        android:icon="@drawable/ic_explorar_placeholder" />-->
+
     <item
         android:id="@+id/nav_estadisticas"
         android:title="Estadísticas"

@@ -1,10 +1,12 @@
 package ruben.gutierrez.proyectofinal_lecturasyresenas
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import ruben.gutierrez.proyectofinal_lecturasyresenas.utilities.CustomBarDrawable
 import ruben.gutierrez.proyectofinal_lecturasyresenas.utilities.CustomCircleDrawable
 import ruben.gutierrez.proyectofinal_lecturasyresenas.utilities.Emociones
@@ -15,6 +17,9 @@ class EstadisticasActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_estadisticas)
+
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
 
         findViewById<View>(R.id.cardLibrosAno).findViewById<TextView>(R.id.tvDescripcion).text = "Libros este año"
         findViewById<View>(R.id.cardLibrosMes).findViewById<TextView>(R.id.tvDescripcion).text = "Libros este mes"
@@ -54,5 +59,25 @@ class EstadisticasActivity : AppCompatActivity() {
         graphGeneros.background = CustomCircleDrawable(this, categorias)
         graphPaginasMes.background = CustomBarDrawable(this, categorias[1])
         graphPaginasAno.background = CustomBarDrawable(this, categorias[1])
+
+
+
+
+        //Esto es para que el icono de estadísticas esté seleccionado
+        bottomNavigation.selectedItemId = R.id.nav_estadisticas
+
+        //Esto es para cambiar entre las secciones
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+
+                R.id.nav_biblioteca -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    overridePendingTransition(0, 0)
+                    true
+                }
+                else -> false
+            }
+        }
     }
-}
+
+    }

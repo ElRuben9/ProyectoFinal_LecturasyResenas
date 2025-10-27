@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white" >
+    android:background="@android:color/white"
+    tools:context=".AgregarLibroActivity">
+
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_add_book"
@@ -57,7 +59,6 @@
 
                 <Button
                     android:id="@+id/btnSeleccionarImagen"
-                    style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Seleccionar imagen"
@@ -65,11 +66,11 @@
                     android:layout_marginTop="8dp" />
             </LinearLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/lightGray"
-                        android:layout_marginVertical="16dp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightGray"
+                android:layout_marginVertical="16dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -109,7 +110,7 @@
 
 
 
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Categoría" android:textStyle="bold" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Categoría" android:textStyle="bold" />
             <Spinner
                 android:id="@+id/spnCategoria"
                 android:layout_width="match_parent"
