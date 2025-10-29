@@ -14,7 +14,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
 
-
 class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 
@@ -40,25 +39,32 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
-        btnLogin.setOnClickListener {
+        val txtErrorLogin = findViewById<TextView>(R.id.txtErrorLogin)
 
+        btnLogin.setOnClickListener {
             val email = correo.text.toString().trim()
             val password = pass.text.toString().trim()
 
+            txtErrorLogin.visibility = TextView.GONE
+
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Completa los campos", Toast.LENGTH_SHORT).show()
+                txtErrorLogin.text = "Por favor, completa todos los campos"
+                txtErrorLogin.visibility = TextView.VISIBLE
                 return@setOnClickListener
             }
 
             auth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener {
-                    Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show()
+                    txtErrorLogin.visibility = TextView.GONE
+                    Toast.makeText(this, "Bienvenid@", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 }
                 .addOnFailureListener {
-                    Toast.makeText(this, "Credenciales inválidas", Toast.LENGTH_SHORT).show()
+                    txtErrorLogin.text = "Correo o contraseña incorrectos"
+                    txtErrorLogin.visibility = TextView.VISIBLE
                 }
         }
+
     }
 }

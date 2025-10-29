@@ -41,10 +41,27 @@
                 android:id="@+id/edtNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
                 android:hint="Nombre completo"
                 android:inputType="textPersonName"
-                android:padding="12dp"
-                android:layout_marginTop="40dp" />
+                android:padding="12dp" />
+
+            <EditText
+                android:id="@+id/edtfechaNacimiento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Fecha de nacimiento"
+                android:inputType="date"
+                android:layout_marginTop="16dp"
+                android:padding="12dp" />
+
+            <EditText
+                android:id="@+id/edtProfesion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Profesión"
+                android:layout_marginTop="16dp"
+                android:padding="12dp" />
 
             <EditText
                 android:id="@+id/edtCorreoRegistro"
@@ -72,6 +89,38 @@
                 android:inputType="textPassword"
                 android:padding="12dp"
                 android:layout_marginTop="16dp" />
+            <TextView
+                android:id="@+id/txtGeneroLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Género:"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="4dp" />
+
+            <RadioGroup
+                android:id="@+id/radioGroupGenero"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="8dp">
+
+                <RadioButton
+                    android:id="@+id/radioMasculino"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Masculino"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/radioFemenino"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Femenino"
+                    android:layout_marginStart="32dp" />
+            </RadioGroup>
 
             <Button
                 android:id="@+id/btnRegistrarme"

@@ -42,6 +42,7 @@
         android:hint="Correo electrónico"
         android:inputType="textEmailAddress"
         android:padding="12dp"
+        android:layout_marginHorizontal="30dp"
         android:layout_marginTop="40dp"
         app:layout_constraintTop_toBottomOf="@id/txtTituloLogin"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,6 +54,7 @@
         android:layout_height="wrap_content"
         android:hint="Contraseña"
         android:inputType="textPassword"
+        android:layout_marginHorizontal="30dp"
         android:padding="12dp"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/edtCorreo"
@@ -60,26 +62,42 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
+        android:id="@+id/txtErrorLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="14sp"
+        android:visibility="gone"
+        android:layout_marginHorizontal="30dp"
+        app:layout_constraintTop_toBottomOf="@id/edtContrasena"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
         android:id="@+id/txtOlvidoContrasena"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:text="¿Olvidaste tu contraseña?"
-        android:textStyle="bold"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="48dp"
         android:clickable="true"
         android:focusable="true"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/edtContrasena"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:text="¿Olvidaste tu contraseña?"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtContrasena" />
 
     <Button
         android:id="@+id/btnEntrar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@color/darkBlue"
         android:text="Entrar"
         android:textColor="@color/white"
-        android:backgroundTint="@color/darkBlue"
-        android:layout_marginTop="32dp"
-        app:layout_constraintTop_toBottomOf="@id/txtOlvidoContrasena" />
+        app:layout_constraintTop_toBottomOf="@id/txtOlvidoContrasena"
+        tools:layout_editor_absoluteX="62dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
