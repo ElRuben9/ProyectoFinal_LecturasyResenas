@@ -107,7 +107,7 @@ class AgregarLibroActivity : AppCompatActivity() {
                 null
             }
 // Si la categoria seleccionada es Ficcion o No Ficcion, tema = null.
-            val generoFinal = if (categoriaSeleccionada == "Ficción" || categoriaSeleccionada == "No ficción") {
+            val generoFinal = if (categoriaSeleccionada == "Ficción" || categoriaSeleccionada == "No Ficción") {
                 genero.selectedItem?.toString()
             } else {
                 null
@@ -206,7 +206,7 @@ class AgregarLibroActivity : AppCompatActivity() {
                         genero.visibility = View.GONE
                     }
 
-                    "Ficción", "No ficción" -> {
+                    "Ficción", "No Ficción" -> {
                         // este muestra el genero y quita el tema
                         txtGeneroLabel.visibility = View.VISIBLE
                         genero.visibility = View.VISIBLE
