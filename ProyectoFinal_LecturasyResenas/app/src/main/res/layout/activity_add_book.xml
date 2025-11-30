@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".AgregarLibroActivity">
+    tools:context=".AgregarLibroActivity"
+    android:paddingTop="40dp">
 
 
     <androidx.appcompat.widget.Toolbar

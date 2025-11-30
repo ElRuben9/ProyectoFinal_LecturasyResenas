@@ -14,58 +14,104 @@ class DetalleLibroActivity : AppCompatActivity() {
 
     private lateinit var layoutProgreso: LinearLayout
     private lateinit var layoutResumen: LinearLayout
+    private lateinit var layoutFinalizar: LinearLayout
 
-    // Views
     private lateinit var imgPortada: ImageView
     private lateinit var tvTitulo: TextView
     private lateinit var tvAutor: TextView
     private lateinit var tvCategoria: TextView
     private lateinit var tvGenero: TextView
     private lateinit var tvSinopsis: TextView
-    private lateinit var tvEditorial: TextView
-    private lateinit var tvAno: TextView
     private lateinit var tvIsbn: TextView
     private lateinit var tvResumen: TextView
-
     private lateinit var tvTema: TextView
 
     private lateinit var ratingBar: RatingBar
     private lateinit var tvValorRating: TextView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private lateinit var etPaginas: EditText
+    private lateinit var btnActualizarProgreso: Button
+    private lateinit var btnIniciarLibro: Button
+    private lateinit var btnMarcarCompletado: Button
+    private lateinit var ratingFinal: RatingBar
+    private lateinit var edtResumenFinal: EditText
+    private lateinit var btnGuardarFinalizacion: Button
 
+    private lateinit var btnEditarDatos: Button
+    private lateinit var progressBar: ProgressBar
+
+    private var libroActual: Libro? = null
+    private var idLibro: String? = null
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detalle_libro)
 
-        // Inicializar views
         imgPortada = findViewById(R.id.imgPortada)
         tvTitulo = findViewById(R.id.tvTituloLibro)
         tvAutor = findViewById(R.id.tvAutorLibro)
         tvCategoria = findViewById(R.id.tvCategoria)
         tvGenero = findViewById(R.id.tvGenero)
+        tvTema = findViewById(R.id.tvTema)
         tvSinopsis = findViewById(R.id.tvSinopsis)
         tvIsbn = findViewById(R.id.tvIsbn)
         tvResumen = findViewById(R.id.tvResumen)
-        tvTema  = findViewById(R.id.tvTema)
-
-        layoutProgreso = findViewById(R.id.layoutProgreso)
-        layoutResumen = findViewById(R.id.layoutResumen)
 
         ratingBar = findViewById(R.id.ratingBar)
         tvValorRating = findViewById(R.id.tvValorRating)
 
-        // Obtener ID del libro
-        val idLibro = intent.getStringExtra("idLibro")
-        if (idLibro != null) cargarLibroDesdeFirestore(idLibro)
+        progressBar = findViewById(R.id.progresoLibro)
 
-        ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
-            tvValorRating.text = rating.toString()
+        layoutProgreso = findViewById(R.id.layoutProgreso)
+        layoutResumen = findViewById(R.id.layoutResumen)
+        layoutFinalizar = findViewById(R.id.layoutFinalizar)
+
+        etPaginas = findViewById(R.id.etPaginasLeidas)
+        btnActualizarProgreso = findViewById(R.id.btnActualizarProgreso)
+        btnIniciarLibro = findViewById(R.id.btnIniciarLibro)
+        btnMarcarCompletado = findViewById(R.id.btnMarcarCompletado)
+
+        ratingFinal = findViewById(R.id.ratingBarEditar)
+        edtResumenFinal = findViewById(R.id.edtResumenFinal)
+        btnGuardarFinalizacion = findViewById(R.id.btnGuardarFinalizacion)
+
+        btnEditarDatos = findViewById(R.id.btnEditarDatos)
+
+
+
+        idLibro = intent.getStringExtra("idLibro")
+        if (idLibro != null) cargarLibroDesdeFirestore(idLibro!!)
+
+
+        btnIniciarLibro.setOnClickListener {
+            actualizarEstadoLibro("En curso", 1)
+        }
+
+        btnActualizarProgreso.setOnClickListener {
+            val pagina = etPaginas.text.toString().toIntOrNull()
+            if (pagina != null) {
+                actualizarPaginaActual(pagina)
+            }
+        }
+
+        btnMarcarCompletado.setOnClickListener {
+            mostrarFinalizacion()
+        }
+
+        btnGuardarFinalizacion.setOnClickListener {
+            guardarFinalizacion()
+        }
+
+        btnEditarDatos.setOnClickListener {
+            Toast.makeText(this, "Aquí abriremos Edición de libro", Toast.LENGTH_SHORT).show()
         }
     }
 
+
+    // carga los datos del libro
     private fun cargarLibroDesdeFirestore(idLibro: String) {
-        val user = FirebaseAuth.getInstance().currentUser ?: return
-        val userId = user.uid
+        val userId = FirebaseAuth.getInstance().currentUser!!.uid
 
         FirebaseFirestore.getInstance()
             .collection("usuarios")
@@ -76,12 +122,15 @@ class DetalleLibroActivity : AppCompatActivity() {
             .addOnSuccessListener { doc ->
                 val libro = doc.toObject(Libro::class.java)
                 if (libro != null) {
+                    libroActual = libro
                     mostrarDatosDelLibro(libro)
                     actualizarVistaSegunEstado(libro)
                 }
             }
     }
 
+
+    // muestra los datos
     private fun mostrarDatosDelLibro(libro: Libro) {
 
         tvTitulo.text = libro.titulo
@@ -90,31 +139,134 @@ class DetalleLibroActivity : AppCompatActivity() {
         tvGenero.text = "Género: ${libro.genero ?: "N/A"}"
         tvTema.text = "Tema: ${libro.tema ?: "N/A"}"
         tvSinopsis.text = libro.sinopsis ?: "Sin sinopsis"
-        tvIsbn.text = libro.isbn ?: "Sin ISBN"
         tvResumen.text = libro.resumen ?: "Sin resumen"
+        tvIsbn.text = "ISBN: ${libro.isbn ?: "N/A"}"
 
-        // Si tiene portada
         if (!libro.portadaUri.isNullOrEmpty()) {
             Picasso.get().load(libro.portadaUri).into(imgPortada)
         }
 
-        // Rating
         ratingBar.rating = libro.rating ?: 0f
         tvValorRating.text = (libro.rating ?: 0f).toString()
+
+        // este muestra el progress bar
+        progressBar.max = libro.paginas ?: 1
+        progressBar.progress = libro.paginaActual ?: 0
     }
 
+
+    // Dependiendo el estado de la lectura se mostrara uno u otro
     private fun actualizarVistaSegunEstado(libro: Libro) {
-        val paginaActual = libro.paginaActual ?: 0
-        val paginasTotales = libro.paginas ?: 0
+        when (libro.estadoLectura) {
 
-        val terminado = paginasTotales > 0 && paginaActual >= paginasTotales
+            "Por leer" -> {
+                layoutProgreso.visibility = View.GONE
+                btnIniciarLibro.visibility = View.VISIBLE
+                btnMarcarCompletado.visibility = View.GONE
+                layoutFinalizar.visibility = View.GONE
+                layoutResumen.visibility = View.GONE
+            }
 
-        if (terminado) {
-            layoutProgreso.visibility = View.GONE
-            layoutResumen.visibility = View.VISIBLE
-        } else {
-            layoutProgreso.visibility = View.VISIBLE
-            layoutResumen.visibility = View.GONE
+            "En curso" -> {
+                btnIniciarLibro.visibility = View.GONE
+                layoutProgreso.visibility = View.VISIBLE
+                btnMarcarCompletado.visibility = View.VISIBLE
+                layoutFinalizar.visibility = View.GONE
+                layoutResumen.visibility = View.GONE
+            }
+
+            "Terminado" -> {
+                layoutProgreso.visibility = View.GONE
+                btnIniciarLibro.visibility = View.GONE
+                btnMarcarCompletado.visibility = View.GONE
+                layoutFinalizar.visibility = View.VISIBLE
+                layoutResumen.visibility = View.VISIBLE
+
+                ratingFinal.rating = libro.rating ?: 0f
+                edtResumenFinal.setText(libro.resumen ?: "")
+            }
         }
+    }
+
+
+    // Actualiza el progreso del libro
+    private fun actualizarPaginaActual(pagina: Int) {
+        val libro = libroActual ?: return
+        val paginasTotales = libro.paginas ?: 1
+        val userId = FirebaseAuth.getInstance().currentUser!!.uid
+
+        // Hace el autocambio a TERMINADO
+        val nuevoEstado =
+            if (pagina >= paginasTotales) "Terminado"
+            else "En curso"
+
+        val updates = mapOf(
+            "paginaActual" to pagina,
+            "estadoLectura" to nuevoEstado
+        )
+
+        FirebaseFirestore.getInstance()
+            .collection("usuarios")
+            .document(userId)
+            .collection("libros")
+            .document(idLibro!!)
+            .update(updates)
+            .addOnSuccessListener {
+
+                // actualiza el progressbar in liveee
+                progressBar.progress = pagina
+
+                Toast.makeText(this, "Progreso actualizado", Toast.LENGTH_SHORT).show()
+
+                cargarLibroDesdeFirestore(idLibro!!)
+            }
+    }
+
+
+    // cambia estado al iniciar
+    private fun actualizarEstadoLibro(nuevoEstado: String, paginaInicial: Int = 0) {
+        val userId = FirebaseAuth.getInstance().currentUser!!.uid
+
+        FirebaseFirestore.getInstance()
+            .collection("usuarios")
+            .document(userId)
+            .collection("libros")
+            .document(idLibro!!)
+            .update(
+                mapOf(
+                    "estadoLectura" to nuevoEstado,
+                    "paginaActual" to paginaInicial
+                )
+            ).addOnSuccessListener {
+                cargarLibroDesdeFirestore(idLibro!!)
+            }
+    }
+
+
+    // para cuando se finaliza el libro
+    private fun mostrarFinalizacion() {
+        layoutFinalizar.visibility = View.VISIBLE
+    }
+
+    private fun guardarFinalizacion() {
+        val userId = FirebaseAuth.getInstance().currentUser!!.uid
+        val calificacion = ratingFinal.rating
+        val resumenTxt = edtResumenFinal.text.toString()
+
+        FirebaseFirestore.getInstance()
+            .collection("usuarios")
+            .document(userId)
+            .collection("libros")
+            .document(idLibro!!)
+            .update(
+                mapOf(
+                    "estadoLectura" to "Terminado",
+                    "rating" to calificacion,
+                    "resumen" to resumenTxt
+                )
+            ).addOnSuccessListener {
+                Toast.makeText(this, "Libro finalizado", Toast.LENGTH_SHORT).show()
+                cargarLibroDesdeFirestore(idLibro!!)
+            }
     }
 }

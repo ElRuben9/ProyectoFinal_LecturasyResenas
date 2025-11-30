@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="MainActivity">
+    tools:context="MainActivity"
+    android:paddingTop="25dp">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -13,29 +14,29 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start"
                 android:text="Mi Biblioteca"
-                android:textSize="22sp"
-                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:layout_gravity="start"/>
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/boton_perfil"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/ic_perfil_placeholder"
                 android:layout_gravity="end"
                 android:layout_marginEnd="16dp"
                 android:clickable="true"
+                android:contentDescription="Botón de Perfil"
                 android:focusable="true"
-                android:contentDescription="Botón de Perfil"/>
+                android:src="@drawable/ic_perfil_placeholder" />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -43,8 +44,8 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabMode="scrollable"
-            app:tabGravity="fill">
+            app:tabGravity="fill"
+            app:tabMode="scrollable" >
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"

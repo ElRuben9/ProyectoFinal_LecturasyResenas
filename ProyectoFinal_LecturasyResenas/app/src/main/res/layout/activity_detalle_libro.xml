@@ -7,9 +7,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="60dp"
         android:orientation="vertical">
 
-        <!-- Header -->
         <TextView
             android:text="Detalle del Libro"
             android:textSize="20sp"
@@ -17,7 +17,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <!-- Portada -->
         <ImageView
             android:id="@+id/imgPortada"
             android:layout_marginTop="12dp"
@@ -26,7 +25,6 @@
             android:src="@drawable/ic_launcher_background"
             android:layout_gravity="center_horizontal" />
 
-        <!-- Título -->
         <TextView
             android:id="@+id/tvTituloLibro"
             android:text="El Nombre del Viento"
@@ -36,22 +34,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <!-- Autor -->
         <TextView
             android:id="@+id/tvAutorLibro"
             android:text="Patrick Rothfuss"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <!-- Categoría -->
         <TextView
             android:id="@+id/tvCategoria"
             android:text="Fantasía"
             android:layout_marginTop="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <!-- Rating y progreso -->
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -86,6 +80,14 @@
             android:textStyle="bold"
             />
 
+
+        <TextView
+            android:text="Estado de lectura"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            />
+
         <ProgressBar
             android:id="@+id/progresoLibro"
             style="?android:attr/progressBarStyleHorizontal"
@@ -95,7 +97,6 @@
             android:max="100"
             android:progress="100" />
 
-        <!-- ACTUALIZAR PROGRESO -->
         <LinearLayout
             android:id="@+id/layoutProgreso"
             android:layout_width="match_parent"
@@ -120,7 +121,65 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <!-- RESUMEN -->
+<!--        BOTON INICIAR LIBRO (solo si esta Por leer)-->
+        <Button
+            android:id="@+id/btnIniciarLibro"
+            android:text="Iniciar libro"
+            android:backgroundTint="@color/darkBlue"
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+<!--         BOT0N MARCAR COMO COMPLETADO (solo si esta En curso)-->
+        <Button
+            android:id="@+id/btnMarcarCompletado"
+            android:text="Marcar como completado"
+            android:backgroundTint="@color/darkBlue"
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+<!--         SECCION PARA FINALIZAR LIBRO (rating y resumen) -->
+        <LinearLayout
+            android:id="@+id/layoutFinalizar"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:visibility="gone">
+
+            <TextView
+                android:text="Calificación"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <RatingBar
+                android:id="@+id/ratingBarEditar"
+                android:numStars="5"
+                android:stepSize="0.5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/edtResumenFinal"
+                android:hint="Escribe tu resumen..."
+                android:minLines="4"
+                android:gravity="top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnGuardarFinalizacion"
+                android:text="Guardar reseña"
+                android:backgroundTint="@color/darkBlue"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
         <LinearLayout
             android:id="@+id/layoutResumen"
             android:layout_width="match_parent"
@@ -143,7 +202,6 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <!-- Sinopsis -->
         <TextView
             android:text="Sinopsis"
             android:textStyle="bold"
@@ -158,7 +216,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <!-- Información del Libro -->
+<!--         Información del Libro -->
         <TextView
             android:text="Información del Libro"
             android:textStyle="bold"
@@ -187,7 +245,7 @@
             android:layout_height="wrap_content" />
 
 
-        <!-- Botón Editar -->
+<!--         Boton editar -->
         <Button
             android:id="@+id/btnEditarDatos"
             android:text="Editar Datos del Libro"
