@@ -52,7 +52,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Fecha de nacimiento"
-                android:inputType="date"
                 android:layout_marginTop="16dp"
                 android:padding="12dp" />
 

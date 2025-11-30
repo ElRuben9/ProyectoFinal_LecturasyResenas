@@ -1,5 +1,6 @@
 package ruben.gutierrez.proyectofinal_lecturasyresenas
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import java.util.Calendar
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -31,9 +33,39 @@ class RegisterActivity : AppCompatActivity() {
         val btnRegistro = findViewById<Button>(R.id.btnRegistrarme)
         val linkLogin = findViewById<TextView>(R.id.txtEnlaceLogin)
 
+        // Esto es para el DatePicker de la fecha de nacimiento
+        fechaNacimiento.inputType = 0
+        fechaNacimiento.isFocusable = false
+        fechaNacimiento.isClickable = true
+
+        fechaNacimiento.setOnClickListener {
+            val calendario = Calendar.getInstance()
+            val año = calendario.get(Calendar.YEAR)
+            val mes = calendario.get(Calendar.MONTH)
+            val dia = calendario.get(Calendar.DAY_OF_MONTH)
+
+            val datePicker = DatePickerDialog(
+                this,
+                { _, year, month, dayOfMonth ->
+                    val fechaSeleccionada = "%02d/%02d/%04d".format(dayOfMonth, month + 1, year)
+                    fechaNacimiento.setText(fechaSeleccionada)
+                },
+                año,
+                mes,
+                dia
+            )
+
+            // Esto es para que no pueda seleccionar una fecha futura
+            datePicker.datePicker.maxDate = System.currentTimeMillis()
+
+            datePicker.show()
+        }
+
+
         linkLogin.setOnClickListener {
             finish() // Regresa al login
         }
+
 
         btnRegistro.setOnClickListener {
             val nombreTxt = nombre.text.toString().trim()
@@ -43,17 +75,25 @@ class RegisterActivity : AppCompatActivity() {
             val password = pass.text.toString().trim()
             val password2 = pass2.text.toString().trim()
 
-            // Validaciones
+            // Validaciones de campos vacios
             if (nombreTxt.isEmpty() || fechaTxt.isEmpty() || profesionTxt.isEmpty() ||
                 email.isEmpty() || password.isEmpty() || password2.isEmpty()) {
                 Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
+            //valida las contraseñas
             if (password != password2) {
                 Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
+            // valida edad minima de 8 años
+            if (!esMayorDe8Anios(fechaTxt)) {
+                Toast.makeText(this, "Debes tener al menos 8 años para registrarte", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
 
             val generoStr = when {
                 radioMasculino.isChecked -> "Masculino"
@@ -64,6 +104,7 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
 
+            //registra al usuario en el firebase auth
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener { authResult ->
                     val userId = authResult.user?.uid ?: return@addOnSuccessListener
@@ -96,4 +137,33 @@ class RegisterActivity : AppCompatActivity() {
                 }
         }
     }
+
+    //Validacion de la edad, que sea mayor a 8 añosss
+    private fun esMayorDe8Anios(fecha: String): Boolean {
+        return try {
+            val partes = fecha.split("/")
+            if (partes.size != 3) return false
+
+            val dia = partes[0].toInt()
+            val mes = partes[1].toInt() - 1
+            val anio = partes[2].toInt()
+
+            val hoy = Calendar.getInstance()
+            val fechaNacimiento = Calendar.getInstance()
+            fechaNacimiento.set(anio, mes, dia)
+
+            var edad = hoy.get(Calendar.YEAR) - fechaNacimiento.get(Calendar.YEAR)
+
+            val aunNoCumple =
+                hoy.get(Calendar.DAY_OF_YEAR) < fechaNacimiento.get(Calendar.DAY_OF_YEAR)
+
+            if (aunNoCumple) edad -= 1
+
+            edad >= 8
+        } catch (e: Exception) {
+            false
+        }
+    }
 }
+
+
