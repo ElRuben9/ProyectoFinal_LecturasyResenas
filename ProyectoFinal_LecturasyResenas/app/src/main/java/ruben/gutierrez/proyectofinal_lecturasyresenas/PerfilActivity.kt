@@ -201,7 +201,7 @@ class PerfilActivity : AppCompatActivity() {
         val tvPaginasHoy = findViewById<TextView>(R.id.tvPaginasHoy)
         val tvDiasSeguidos = findViewById<TextView>(R.id.tvDiasSeguidos)
 
-        // 1️⃣ LIBROS LEÍDOS
+        // Libros leídos
         firestore.collection("usuarios")
             .document(userId)
             .collection("libros")
@@ -211,49 +211,29 @@ class PerfilActivity : AppCompatActivity() {
                 tvLibrosLeidos.text = snap.size().toString()
             }
 
-        val sdf = java.text.SimpleDateFormat("yyyy-MM-dd")
-        val hoy = sdf.format(java.util.Date())
-
+        // Estadísticas generales
         firestore.collection("usuarios")
             .document(userId)
-            .collection("historialLectura")
-            .document(hoy)
+            .collection("estadisticas")
+            .document("general")
             .get()
             .addOnSuccessListener { doc ->
-                val paginas = doc.getLong("paginasLeidas") ?: 0
-                tvPaginasHoy.text = paginas.toString()
-            }
 
+                if (doc.exists()) {
 
-        firestore.collection("usuarios")
-            .document(userId)
-            .collection("historialLectura")
-            .get()
-            .addOnSuccessListener { snap ->
+                    // PÁGINAS HOY
+                    val paginasHoy = (doc.getLong("paginasHoy") ?: 0).toInt()
+                    tvPaginasHoy.text = paginasHoy.toString()
 
-                val fechas = snap.documents
-                    .mapNotNull { it.id }
-                    .sortedDescending() // yyyy-MM-dd funciona perfecto
+                    // RACHA
+                    val racha = (doc.getLong("rachaDias") ?: 1).toInt()
+                    tvDiasSeguidos.text = racha.toString()
 
-                var racha = 0
-
-                val cal = java.util.Calendar.getInstance()
-
-                for (i in fechas.indices) {
-                    val fecha = fechas[i]
-
-                    val fechaDate = sdf.parse(fecha)
-
-                    cal.time = java.util.Date()
-                    cal.add(java.util.Calendar.DAY_OF_MONTH, -racha)
-                    val fechaEsperada = sdf.format(cal.time)
-
-                    if (fecha == fechaEsperada) {
-                        racha++
-                    } else break
+                } else {
+                    // Si el doc no existe aún → mostrar 0 en todo
+                    tvPaginasHoy.text = "0"
+                    tvDiasSeguidos.text = "0"
                 }
-
-                tvDiasSeguidos.text = racha.toString()
             }
     }
 
