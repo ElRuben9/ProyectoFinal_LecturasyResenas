@@ -17,7 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@android:color/white"
             app:navigationIcon="@drawable/arrow_back"
-            app:title="Detalle del Libro"
+            app:title="Editar libro"
             app:titleTextColor="@color/black" />
 
         <ImageView
