@@ -85,7 +85,7 @@ class FullPieChartDrawable(
 
         for (item in items) {
 
-            val porcentajeEntero = item.porcentaje.toInt()
+            val valorEntero = item.peso.toInt()
 
             // Cuadrado de color
             legendColorPaint.color = ContextCompat.getColor(context, item.color)
@@ -98,7 +98,7 @@ class FullPieChartDrawable(
             )
 
             // Texto
-            val text = "${item.nombre}  (${porcentajeEntero}%)"
+            val text = "${item.nombre}  (${valorEntero})"
             canvas.drawText(
                 text,
                 startX + colorBoxSize + colorBoxMargin,

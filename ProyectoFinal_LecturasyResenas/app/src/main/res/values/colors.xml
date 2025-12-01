@@ -10,5 +10,7 @@
     <color name="greenie">#8BC34A</color>
     <color name="blue">#00BCD4</color>
 
+    <color name="purple_200">#BB86FC</color>
+    <color name="teal_200">#03DAC5</color>
 
 </resources>

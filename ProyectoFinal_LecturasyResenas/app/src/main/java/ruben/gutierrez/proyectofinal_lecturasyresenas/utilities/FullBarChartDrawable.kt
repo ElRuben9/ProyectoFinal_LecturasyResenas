@@ -42,6 +42,8 @@ class FullBarChartDrawable(
 
         for (item in items) {
 
+            val valorEntero = item.peso.toInt()
+
             // ------------------------------------------
             // 1) CALCULAR GEOMETRÍA DE LA BARRA
             // ------------------------------------------
@@ -80,7 +82,7 @@ class FullBarChartDrawable(
             // 5) PORCENTAJE A LA DERECHA
             // ------------------------------------------
 
-            val percentText = "${porcentaje.toInt()}%"
+            val percentText = "${valorEntero}"
             canvas.drawText(
                 percentText,
                 barRight + 30f,
