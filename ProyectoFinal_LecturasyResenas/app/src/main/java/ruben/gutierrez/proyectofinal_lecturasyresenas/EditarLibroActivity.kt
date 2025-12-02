@@ -81,7 +81,10 @@ class EditarLibroActivity : AppCompatActivity() {
     }
 
     private fun seleccionarImagen() {
-        val intent = Intent(Intent.ACTION_PICK).apply { type = "image/*" }
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "image/*"
+        }
         startActivityForResult(intent, PICK_IMAGE)
     }
 
@@ -90,6 +93,11 @@ class EditarLibroActivity : AppCompatActivity() {
 
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
             nuevaPortadaUri = data?.data
+
+            contentResolver.takePersistableUriPermission(
+                nuevaPortadaUri!!,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
             imgPortada.setImageURI(nuevaPortadaUri)
         }
     }

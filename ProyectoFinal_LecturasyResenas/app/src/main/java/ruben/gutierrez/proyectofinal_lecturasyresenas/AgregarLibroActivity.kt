@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import ruben.gutierrez.proyectofinal_lecturasyresenas.model.Libro
 import ruben.gutierrez.proyectofinal_lecturasyresenas.utilities.StatisticsManager
+import java.io.File
 
 class AgregarLibroActivity : AppCompatActivity() {
 
@@ -24,8 +25,23 @@ class AgregarLibroActivity : AppCompatActivity() {
     private val seleccionarImagen =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-                portadaUri = result.data!!.data
-                findViewById<ImageView>(R.id.imgPortadaPreview).setImageURI(portadaUri)
+
+                val uri = result.data!!.data
+                if (uri != null) {
+
+                    val takeFlags = result.data!!.flags and
+                            (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+
+                    try {
+                        contentResolver.takePersistableUriPermission(uri, takeFlags)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+
+                    portadaUri = uri
+
+                    findViewById<ImageView>(R.id.imgPortadaPreview).setImageURI(uri)
+                }
             }
         }
 
@@ -81,7 +97,10 @@ class AgregarLibroActivity : AppCompatActivity() {
 
 
         btnSeleccionarImg.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK).apply { type = "image/*" }
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "image/*"
+            }
             seleccionarImagen.launch(intent)
         }
 
@@ -229,28 +248,34 @@ class AgregarLibroActivity : AppCompatActivity() {
 
 
     private fun subirImagenACloudinary(libro: Libro) {
-
         val uri = portadaUri ?: return
 
         Toast.makeText(this, "Subiendo imagen...", Toast.LENGTH_SHORT).show()
 
-        MediaManager.get().upload(uri)
-            .unsigned("libros_preset")   //
-            .option("folder", "libros/") //
-            .callback(object : UploadCallback {
-                override fun onStart(requestId: String?) {
-                    // mostrar progress bar
-                }
 
-                override fun onProgress(requestId: String?, bytes: Long, totalBytes: Long) {
-                    // actualizar progreso
-                }
+        val inputStream = contentResolver.openInputStream(uri)
+        val tempFile = File.createTempFile("portada", ".jpg", cacheDir)
+        tempFile.outputStream().use { output ->
+            inputStream?.copyTo(output)
+        }
+
+        MediaManager.get().upload(tempFile.absolutePath)
+            .unsigned("libros_preset")
+            .option("folder", "libros/")
+            .callback(object : UploadCallback {
 
                 override fun onSuccess(requestId: String?, resultData: Map<*, *>) {
                     val url = resultData["secure_url"] as? String
+
                     if (url != null) {
                         val libroConImagen = libro.copy(portadaUri = url)
                         guardarLibroEnFirestore(libroConImagen)
+                    } else {
+                        Toast.makeText(
+                            this@AgregarLibroActivity,
+                            "No se obtuvo URL de portada",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
@@ -262,13 +287,9 @@ class AgregarLibroActivity : AppCompatActivity() {
                     ).show()
                 }
 
-                override fun onReschedule(requestId: String?, error: ErrorInfo?) {
-                    Toast.makeText(
-                        this@AgregarLibroActivity,
-                        "Error temporal, se reintentará: ${error?.description}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                override fun onStart(requestId: String?) {}
+                override fun onProgress(requestId: String?, bytes: Long, totalBytes: Long) {}
+                override fun onReschedule(requestId: String?, error: ErrorInfo?) {}
             })
             .dispatch()
     }
@@ -279,13 +300,13 @@ class AgregarLibroActivity : AppCompatActivity() {
         val ref = firestore.collection("usuarios")
             .document(userId)
             .collection("libros")
-            .document() // genera id antes de guardar
+            .document()
 
         val libroConId = libro.copy(id = ref.id)
 
         ref.set(libroConId)
             .addOnSuccessListener {
-                // Llamadas al manager de estadisticas
+
                 StatisticsManager().registrarPaginas(libro.paginaActual!!)
                 if(libro.estadoLectura == "Terminado")
                     StatisticsManager().registrarLibroLeido()

@@ -27,8 +27,15 @@ class PerfilActivity : AppCompatActivity() {
 
     private val seleccionarImagen =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
                 nuevaImagenUri = result.data!!.data
+
+                contentResolver.takePersistableUriPermission(
+                    nuevaImagenUri!!,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+
                 findViewById<ImageView>(R.id.imgPerfil).setImageURI(nuevaImagenUri)
                 subirImagenACloudinary()
             }
@@ -129,7 +136,10 @@ class PerfilActivity : AppCompatActivity() {
 
 
         tvCambiarFoto.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK).apply { type = "image/*" }
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "image/*"
+            }
             seleccionarImagen.launch(intent)
         }
 
